@@ -1,3 +1,4 @@
+
 class Commit {
     constructor(cantPruebas, cantLineas, cobertura, complejidad, fechaHora, idCommit) {
         this.cantPruebas = cantPruebas;
@@ -9,7 +10,7 @@ class Commit {
         this.fechaHora = fechaHora;
         this.frecuencia = "Regular";
         this.id = idCommit;
-    }
+    }               
 
     getId(){
         return this.id;
