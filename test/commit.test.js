@@ -59,5 +59,21 @@ describe('Commit Class Tests', function() {
     });
   });
 
+  describe('Métodos setters', function() {
+    it('setPruebasAprob debe actualizar correctamente', function() {
+      commit.setPruebasAprob(8);
+      expect(commit.getCantPruebasAprob()).to.equal(8);
+    });
+    
+    it('setFechaHora debe actualizar correctamente', function() {
+      commit.setFechaHora('2025-04-07T15:30:00');
+      expect(commit.getFechaHora()).to.equal('2025-04-07T15:30:00');
+    });
+    
+    it('setFrecuencia debe actualizar correctamente', function() {
+      commit.setFrecuencia('Alta');
+      expect(commit.getFrecuencia()).to.equal('Alta');
+    });
+  });
   
 });
