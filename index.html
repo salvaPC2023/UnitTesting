@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TDD GAME</title>
+    <link rel="stylesheet" href="./src/CSS/estilos.css">
+    <link rel="icon" href="logo.png" type="image/x-icon">
+</head>
+
+<body>
+    <h1>Lista de tus proyectos</h1>
+    <button id="btnAniadirProyecto">Añadir Proyecto</button>
+    <button id="btnMostrarRanking">Ranking</button>
+    <form id="proyectoForm" style="display: none;">
+        <input type="text" id="inputTitulo" placeholder="Ingrese el título del proyecto">
+        <button type="button" id="btnConfirmProyecto">Confirmar Proyecto</button>
+        <div id="mensajeError" style="display: none; color: red;"></div>
+    </form>
+    <div id="proyectoContainer"></div>
+    <script src="src/SCRIPTS/principal.js" type="module"></script>
+</body>
+
+</html>

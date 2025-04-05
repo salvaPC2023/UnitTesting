@@ -1,0 +1,77 @@
+body {
+    margin-top: 5%;
+    margin-left: 5%;
+    border: 1px solid black;
+    width: auto;
+}
+body > * {
+    margin: 10px; /* Ajusta el valor según lo deseado */
+}
+
+/* Estilos para párrafos */
+p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+/* Estilos para etiquetas de formularios */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    line-height: 1.5;
+    width: 100%;
+    box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total del input */
+    margin-bottom: 15px;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+    outline: none;
+    border-color: #007bff; /* Cambia el color del borde al enfocar */
+}
+
+/* Estilos para botones */
+button {
+    padding: 4px 10px; /* Reducir el padding */
+    background-color: #383c3f;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-left: 1%;
+    
+}
+
+button:hover {
+    background-color: #000000;
+}
+
+/* Estilos para mensajes de error */
+.error-message {
+    color: red;
+    margin-top: 5px;
+}
+
+/* Estilos para mensajes de éxito */
+.success-message {
+    color: green;
+    margin-top: 5px;
+}
+
+/* Estilos para texto dentro de un div */
+div {
+    margin-top: 1%;
+    font-size: 17px;
+    line-height: 1.5;
+    color: #000000; /* Color del texto */
+}
