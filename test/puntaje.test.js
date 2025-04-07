@@ -37,4 +37,25 @@ describe('Puntaje Class Tests', function() {
       expect(puntaje.getPuntajePruebas()).to.equal(-10);
     });
   });
+
+  describe('Métodos puntajeLineasCodigo', function() {
+    it('getPuntajeLineasCodigo debe retornar el valor inicial', function() {
+      expect(puntaje.getPuntajeLineasCodigo()).to.equal(100);
+    });
+
+    it('setPuntajeLineasCodigo debe cambiar el valor correctamente', function() {
+      puntaje.setPuntajeLineasCodigo(200);
+      expect(puntaje.getPuntajeLineasCodigo()).to.equal(200);
+    });
+
+    it('setPuntajeLineasCodigo debe aceptar el valor 0', function() {
+      puntaje.setPuntajeLineasCodigo(0);
+      expect(puntaje.getPuntajeLineasCodigo()).to.equal(0);
+    });
+
+    it('setPuntajeLineasCodigo debe manejar valores negativos', function() {
+      puntaje.setPuntajeLineasCodigo(-50);
+      expect(puntaje.getPuntajeLineasCodigo()).to.equal(-50);
+    });
+  });
 });
