@@ -75,5 +75,33 @@ describe('Commit Class Tests', function() {
       expect(commit.getFrecuencia()).to.equal('Alta');
     });
   });
+
+
+  describe('Métodos edit', function() {
+    it('editarCantPruebas debe actualizar correctamente', function() {
+      commit.editarCantPruebas(15);
+      expect(commit.getCantPruebas()).to.equal(15);
+    });
+    
+    it('editarCantLineas debe actualizar correctamente', function() {
+      commit.editarCantLineas(300);
+      expect(commit.getCantLineas()).to.equal(300);
+    });
+    
+    it('editarCobertura debe actualizar correctamente', function() {
+      commit.editarCobertura(90);
+      expect(commit.getCobertura()).to.equal(90);
+    });
+    
+    it('editarComplejidad debe actualizar correctamente', function() {
+      commit.editarComplejidad(8);
+      expect(commit.getComplejidad()).to.equal(8);
+    });
+    
+    it('editarFechaHora debe actualizar correctamente', function() {
+      commit.editarFechaHora('2025-04-08T10:00:00');
+      expect(commit.getFechaHora()).to.equal('2025-04-08T10:00:00');
+    });
+  });
   
 });
