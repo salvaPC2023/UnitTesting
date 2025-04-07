@@ -246,6 +246,67 @@ describe('Commit Class Tests', function() {
       expect(resultado).to.equal(esperado);
     });
 
+    // TC13-TC18 para generarRecomendacion
+    it('TC13: Debe generar recomendación para pruebas aprobadas < 0.6, cantLineas > 500, cobertura < 70', function() {
+      const testCommit = new Commit(10, 600, 60, 5, '2025-04-06T12:00:00', 'tc13');
+      testCommit.setPruebasAprob(5); // 50% de pruebas aprobadas (menor a 0.6)
+      
+      const resultado = testCommit.getRecomendacion();
+      
+      const esperado = "Se recomienda mejorar la cantidad de pruebas aprobadas. El commit tiene muchas líneas de código, considera refactorizar para mejorar la legibilidad. La cobertura de código es baja, considera añadir más pruebas.";
+      expect(resultado).to.equal(esperado);
+    });
+
+    it('TC14: Debe generar recomendación para pruebas aprobadas < 0.6, cantLineas > 500, cobertura >= 70', function() {
+      const testCommit = new Commit(10, 550, 75, 5, '2025-04-06T12:00:00', 'tc14');
+      testCommit.setPruebasAprob(3); // 30% de pruebas aprobadas (menor a 0.6)
+      
+      const resultado = testCommit.getRecomendacion();
+      
+      const esperado = "Se recomienda mejorar la cantidad de pruebas aprobadas. El commit tiene muchas líneas de código, considera refactorizar para mejorar la legibilidad. ";
+      expect(resultado).to.equal(esperado);
+    });
+
+    it('TC15: Debe generar recomendación para pruebas aprobadas < 0.6, 100 < cantLineas <= 500, cobertura < 70', function() {
+      const testCommit = new Commit(10, 300, 65, 5, '2025-04-06T12:00:00', 'tc15');
+      testCommit.setPruebasAprob(4); // 40% de pruebas aprobadas (menor a 0.6)
+      
+      const resultado = testCommit.getRecomendacion();
+      
+      const esperado = "Se recomienda mejorar la cantidad de pruebas aprobadas. Buen manejo de la cantidad de líneas de código. La cobertura de código es baja, considera añadir más pruebas.";
+      expect(resultado).to.equal(esperado);
+    });
+
+    it('TC16: Debe generar recomendación para pruebas aprobadas < 0.6, 100 < cantLineas <= 500, cobertura >= 70', function() {
+      const testCommit = new Commit(10, 250, 80, 5, '2025-04-06T12:00:00', 'tc16');
+      testCommit.setPruebasAprob(5); // 50% de pruebas aprobadas (menor a 0.6)
+      
+      const resultado = testCommit.getRecomendacion();
+      
+      const esperado = "Se recomienda mejorar la cantidad de pruebas aprobadas. Buen manejo de la cantidad de líneas de código. ";
+      expect(resultado).to.equal(esperado);
+    });
+
+    it('TC17: Debe generar recomendación para pruebas aprobadas < 0.6, cantLineas <= 100, cobertura < 70', function() {
+      const testCommit = new Commit(10, 80, 60, 5, '2025-04-06T12:00:00', 'tc17');
+      testCommit.setPruebasAprob(2); // 20% de pruebas aprobadas (menor a 0.6)
+      
+      const resultado = testCommit.getRecomendacion();
+      
+      const esperado = "Se recomienda mejorar la cantidad de pruebas aprobadas. La cobertura de código es baja, considera añadir más pruebas.";
+      expect(resultado).to.equal(esperado);
+    });
+
+    it('TC18: Debe generar recomendación para pruebas aprobadas < 0.6, cantLineas <= 100, cobertura >= 70', function() {
+      const testCommit = new Commit(10, 90, 80, 5, '2025-04-06T12:00:00', 'tc18');
+      testCommit.setPruebasAprob(0); // 0% de pruebas aprobadas (menor a 0.6)
+      
+      const resultado = testCommit.getRecomendacion();
+      
+      const esperado = "Se recomienda mejorar la cantidad de pruebas aprobadas. ";
+      expect(resultado).to.equal(esperado);
+    });
+
 
     
   });
