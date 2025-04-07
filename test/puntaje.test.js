@@ -16,4 +16,25 @@ describe('Puntaje Class Tests', function() {
     });
   });
 
+  describe('Métodos puntajePruebas', function() {
+    it('getPuntajePruebas debe retornar el valor inicial', function() {
+      expect(puntaje.getPuntajePruebas()).to.equal(0);
+    });
+
+    it('setPuntajePruebas debe cambiar el valor correctamente', function() {
+      puntaje.setPuntajePruebas(85);
+      expect(puntaje.getPuntajePruebas()).to.equal(85);
+    });
+
+    it('setPuntajePruebas debe aceptar el valor 0', function() {
+      puntaje.setPuntajePruebas(50);
+      puntaje.setPuntajePruebas(0);
+      expect(puntaje.getPuntajePruebas()).to.equal(0);
+    });
+
+    it('setPuntajePruebas debe manejar valores negativos', function() {
+      puntaje.setPuntajePruebas(-10);
+      expect(puntaje.getPuntajePruebas()).to.equal(-10);
+    });
+  });
 });
