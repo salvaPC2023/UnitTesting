@@ -85,4 +85,24 @@ describe('Puntaje Class Tests', function() {
       expect(puntaje.getPuntajeCobertura()).to.equal(-25);
     });
   });
+
+  describe('Integración de múltiples métodos', function() {
+    it('debe mantener valores independientes para cada propiedad', function() {
+      puntaje.setPuntajePruebas(90);
+      puntaje.setPuntajeLineasCodigo(150);
+      puntaje.setPorcentajeCobertura(80);
+      
+      expect(puntaje.getPuntajePruebas()).to.equal(90);
+      expect(puntaje.getPuntajeLineasCodigo()).to.equal(150);
+      expect(puntaje.getPuntajeCobertura()).to.equal(80);
+    });
+    
+    it('debe permitir sobrescribir valores múltiples veces', function() {
+      puntaje.setPuntajePruebas(50);
+      puntaje.setPuntajePruebas(75);
+      puntaje.setPuntajePruebas(85);
+      
+      expect(puntaje.getPuntajePruebas()).to.equal(85);
+    });
+  });
 });
