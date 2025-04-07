@@ -103,5 +103,87 @@ describe('Commit Class Tests', function() {
       expect(commit.getFechaHora()).to.equal('2025-04-08T10:00:00');
     });
   });
+
+
+  //T.28 Realizar TC1-TC6 de clase COMMIT.JS de funcion generarRecomendacion().
+  describe('Pruebas para generarRecomendacion', function() {
+    // TC1: puntaje_provisional = 1, cantLineas > 500, cobertura < 70
+    it('TC1: Debe generar recomendación para 100% pruebas aprobadas, cantLineas > 500, cobertura < 70', function() {
+      
+      const testCommit = new Commit(10, 600, 60, 5, '2025-04-06T12:00:00', 'tc1');
+      testCommit.setPruebasAprob(10); // 100% de pruebas aprobadas
+      
+      
+      const resultado = testCommit.getRecomendacion();
+      
+            const esperado = "Buen trabajo en las pruebas aprobadas. El commit tiene muchas líneas de código, considera refactorizar para mejorar la legibilidad. La cobertura de código es baja, considera añadir más pruebas.";
+      expect(resultado).to.equal(esperado);
+    });
+    
+    // TC2: puntaje_provisional = 1, cantLineas > 500, cobertura >= 70
+    it('TC2: Debe generar recomendación para 100% pruebas aprobadas, cantLineas > 500, cobertura >= 70', function() {
+      
+      const testCommit = new Commit(5, 550, 80, 5, '2025-04-06T12:00:00', 'tc2');
+      testCommit.setPruebasAprob(5); // 100% de pruebas aprobadas
+      
+      
+      const resultado = testCommit.getRecomendacion();
+      
+            const esperado = "Buen trabajo en las pruebas aprobadas. El commit tiene muchas líneas de código, considera refactorizar para mejorar la legibilidad. ";
+      expect(resultado).to.equal(esperado);
+    });
+    
+    // TC3: puntaje_provisional = 1, 100 < cantLineas <= 500, cobertura < 70
+    it('TC3: Debe generar recomendación para 100% pruebas aprobadas, 100 < cantLineas <= 500, cobertura < 70', function() {
+      
+      const testCommit = new Commit(8, 300, 65, 5, '2025-04-06T12:00:00', 'tc3');
+      testCommit.setPruebasAprob(8); // 100% de pruebas aprobadas
+      
+      
+      const resultado = testCommit.getRecomendacion();
+      
+            const esperado = "Buen trabajo en las pruebas aprobadas. Buen manejo de la cantidad de líneas de código. La cobertura de código es baja, considera añadir más pruebas.";
+      expect(resultado).to.equal(esperado);
+    });
+    
+    // TC4: puntaje_provisional = 1, 100 < cantLineas <= 500, cobertura >= 70
+    it('TC4: Debe generar recomendación para 100% pruebas aprobadas, 100 < cantLineas <= 500, cobertura >= 70', function() {
+      
+      const testCommit = new Commit(6, 250, 75, 5, '2025-04-06T12:00:00', 'tc4');
+      testCommit.setPruebasAprob(6); // 100% de pruebas aprobadas
+      
+      
+      const resultado = testCommit.getRecomendacion();
+      
+            const esperado = "Buen trabajo en las pruebas aprobadas. Buen manejo de la cantidad de líneas de código. ";
+      expect(resultado).to.equal(esperado);
+    });
+    
+    // TC5: puntaje_provisional = 1, cantLineas <= 100, cobertura < 70
+    it('TC5: Debe generar recomendación para 100% pruebas aprobadas, cantLineas <= 100, cobertura < 70', function() {
+      
+      const testCommit = new Commit(7, 50, 60, 5, '2025-04-06T12:00:00', 'tc5');
+      testCommit.setPruebasAprob(7); // 100% de pruebas aprobadas
+      
+      
+      const resultado = testCommit.getRecomendacion();
+      
+            const esperado = "Buen trabajo en las pruebas aprobadas. La cobertura de código es baja, considera añadir más pruebas.";
+      expect(resultado).to.equal(esperado);
+    });
+    
+    // TC6: puntaje_provisional = 1, cantLineas <= 100, cobertura >= 70
+    it('TC6: Debe generar recomendación para 100% pruebas aprobadas, cantLineas <= 100, cobertura >= 70', function() {
+      
+      const testCommit = new Commit(4, 95, 80, 5, '2025-04-06T12:00:00', 'tc6');
+      testCommit.setPruebasAprob(4); // 100% de pruebas aprobadas
+      
+      
+      const resultado = testCommit.getRecomendacion();
+      
+            const esperado = "Buen trabajo en las pruebas aprobadas. ";
+      expect(resultado).to.equal(esperado);
+    });
+  });
   
 });
