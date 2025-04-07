@@ -58,4 +58,31 @@ describe('Puntaje Class Tests', function() {
       expect(puntaje.getPuntajeLineasCodigo()).to.equal(-50);
     });
   });
+
+  describe('Métodos puntajeCobertura', function() {
+    it('getPuntajeCobertura debe retornar el valor inicial', function() {
+      expect(puntaje.getPuntajeCobertura()).to.equal(0);
+    });
+
+    it('setPorcentajeCobertura debe cambiar el valor correctamente', function() {
+      puntaje.setPorcentajeCobertura(75);
+      expect(puntaje.getPuntajeCobertura()).to.equal(75);
+    });
+
+    it('setPorcentajeCobertura debe aceptar valores de porcentaje válidos', function() {
+      puntaje.setPorcentajeCobertura(0);
+      expect(puntaje.getPuntajeCobertura()).to.equal(0);
+      
+      puntaje.setPorcentajeCobertura(100);
+      expect(puntaje.getPuntajeCobertura()).to.equal(100);
+    });
+
+    it('setPorcentajeCobertura debe manejar valores fuera de rango', function() {
+      puntaje.setPorcentajeCobertura(150);
+      expect(puntaje.getPuntajeCobertura()).to.equal(150);
+      
+      puntaje.setPorcentajeCobertura(-25);
+      expect(puntaje.getPuntajeCobertura()).to.equal(-25);
+    });
+  });
 });
