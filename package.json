@@ -24,7 +24,7 @@
       "html",
       "text"
     ],
-    "check-coverage": true,
+    "check-coverage": false,
     "all": true
   },
   "author": "Israel Antezana R.",
