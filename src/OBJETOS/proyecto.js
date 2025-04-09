@@ -1,8 +1,8 @@
-import ArrayCommit from "./commitsArray";
-import Puntaje from "./puntaje";
+import ArrayCommit from "./commitsArray.js";
+import Puntaje from "./puntaje.js";
 import path from "path";
 import fs from "fs";
-import Commit from "./commit";
+import Commit from "./commit.js";
 
 class Proyecto {
     constructor(titulo) {
