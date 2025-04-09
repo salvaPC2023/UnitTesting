@@ -10,8 +10,16 @@ describe('Proyecto Class Tests', function() {
     let proyecto;
     
     beforeEach(() => {
-        proyecto = new Proyecto("Proyecto 1");
+        proyecto = new Proyecto("Mi Proyecto");
       });
+    
+            
+     it('debería asignar correctamente el título', () => {
+            // Comprobamos si el título se asigna correctamente
+            expect(proyecto.getTitulo()).to.equal('Mi Proyecto');
+        });
+
+
   });
 
 
