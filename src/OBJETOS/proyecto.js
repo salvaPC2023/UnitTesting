@@ -199,7 +199,7 @@ class Proyecto {
             return 8;
         }
     }
-
+///carmen
     objeterPuntajesCobertura(promedioCobertura) {
         if (promedioCobertura > 90)
             return 20;
