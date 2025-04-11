@@ -48,8 +48,12 @@ describe('Proyecto Class Tests', function() {
     
         expect(proyecto.mostrarCommits()).to.deep.equal([]);
       });
+    
+      it('El proyecto debería devolver el puntaje de 0', () => {
+        const proyecto = new Proyecto("Proyecto1");
+        expect(proyecto.getPuntajePruebas()).to.equal(0);
+      });
 
-      
   });
 
 
