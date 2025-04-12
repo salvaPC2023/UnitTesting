@@ -21,24 +21,21 @@ describe('Proyecto Class Tests', function() {
         });
         
      
-     //it("debería añadir un commit correctamente", () => {
-       // const proyecto = new Proyecto("Test");
-      
-        //proyecto.aniadirCommit(3, 100, 80, "regular");
-      
-     //   expect(proyecto.mostrarCommits()).to.deep.equal([
-       //   {
-         //   idCommit: 1, 
-           // cantPruebas: 3,
-            //cantLineas: 100,
-            //cobertura: 80,
-            //complejidad: "regular",
-            //fechaHora: "2025-04-11",
-            //recomendacion: "Se recomienda mejorar la cantidad de pruebas aprobadas.",
-            //frecuencia: "Regular"
-         // }
-        //]);
-     // });
+        it("debería añadir un commit correctamente", () => {
+          const proyecto = new Proyecto("Test");
+          proyecto.aniadirCommit(3, 100, 80, "regular", "2025-04-11");
+          
+          const commits = proyecto.mostrarCommits();
+          expect(commits[0].cantPruebas).to.equal(3);
+          expect(commits[0].cantLineas).to.equal(100);
+          expect(commits[0].cobertura).to.equal(80);
+          expect(commits[0].complejidad).to.equal("regular");
+          expect(commits[0].recomendacion.trim()).to.equal("Se recomienda mejorar la cantidad de pruebas aprobadas.");
+          expect(commits[0].frecuencia).to.equal("Regular");
+        });
+        
+        
+                
 
       it("debería eliminar un commit desde un objeto proyecto", () => {
         const proyecto = new Proyecto("Elim");
@@ -276,6 +273,89 @@ describe('Proyecto Class Tests', function() {
     });
   });
 
+
+
+  describe('Proyecto Class Tests', function() {
+    
+    
+    // Se ejecuta antes de cada prueba
+    beforeEach(function() {
+      proyecto = new Proyecto("TestProyecto");
+    });
+  
+    describe('Método calcularPorcentaje', function() {
+      
+          
+      it('debería retornar 100 cuando todos los commits tienen pruebas', function() {
+        // Configuración
+        const mockArrayCommit = { 
+          getCommits: () => [
+            { getCantPruebas: () => 1 },
+            { getCantPruebas: () => 1 }
+          ] 
+        };
+        
+        // Ejecución y Verificación
+        expect(proyecto.calcularPorcentaje(mockArrayCommit)).to.equal(100);
+      });
+    
+      it('debería retornar ~66.67 cuando 2 de 3 commits tienen pruebas', function() {
+        // Configuración
+        const mockArrayCommit = {
+          getCommits: () => [
+            { getCantPruebas: () => 1 },
+            { getCantPruebas: () => 0 },
+            { getCantPruebas: () => 1 }
+          ]
+        };
+        
+        // Ejecución y Verificación
+        expect(proyecto.calcularPorcentaje(mockArrayCommit)).to.be.closeTo(66.67, 0.01);
+      });
+  
+      it('debería retornar 0 cuando ningún commit tiene pruebas', function() {
+        // Configuración
+        const mockArrayCommit = { 
+          getCommits: () => [
+            { getCantPruebas: () => 0 },
+            { getCantPruebas: () => 0 }
+          ] 
+        };
+        
+        // Ejecución y Verificación
+        expect(proyecto.calcularPorcentaje(mockArrayCommit)).to.equal(0);
+      });
+    });
+  });
+
+  describe('Método getPuntajeCantPruebas', function() {
+    let proyecto;
+    let originalTieneCommits, originalCalcularPorcentaje, originalObjeterPuntajes;
+    
+    beforeEach(function() {
+        proyecto = new Proyecto("TestProyecto");
+        
+        // Guardar implementaciones originales
+        originalTieneCommits = proyecto.tieneCommits;
+        originalCalcularPorcentaje = proyecto.calcularPorcentaje;
+        originalObjeterPuntajes = proyecto.objeterPuntajes;
+    });
+
+    afterEach(function() {
+        // Restaurar implementaciones originales
+        proyecto.tieneCommits = originalTieneCommits;
+        proyecto.calcularPorcentaje = originalCalcularPorcentaje;
+        proyecto.objeterPuntajes = originalObjeterPuntajes;
+    });
+
+    it('debería retornar 8 cuando no hay commits', function() {
+        proyecto.tieneCommits = () => false;
+        const resultado = proyecto.getPuntajeCantPruebas([]);
+        expect(resultado).to.equal(8);
+    });
+    
+    
+});
 
 
     describe('Método asignarPuntajeFrecuencia', function() {
