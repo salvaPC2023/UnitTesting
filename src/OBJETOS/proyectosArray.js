@@ -1,4 +1,4 @@
-import Proyecto from "./proyecto";
+import Proyecto from "./proyecto.js";
 
 class ArrayProyectos {
     constructor() {
