@@ -515,4 +515,31 @@ describe('ArrayCommit Class Tests', () => {
     });
   });
 
+
+describe('ArrayCommit - parseFecha', () => {
+    let arrayCommit;
+    
+    beforeEach(() => {
+      arrayCommit = new ArrayCommit();
+    });
+    
+    // TC1: Único camino posible - formato de fecha estándar
+    it('TC1: debería parsear correctamente una fecha en formato DD/MM/YYYY-HH:MM', () => {
+      // Arrange
+      const fechaHoraStr = "10/04/2025-14:30";
+      const expectedDate = new Date(2025, 3, 10, 14, 30);
+      
+      // Act
+      const resultado = arrayCommit.parseFecha(fechaHoraStr);
+      
+      // Assert
+      expect(resultado).to.be.an.instanceof(Date);
+      expect(resultado.getFullYear()).to.equal(2025);
+      expect(resultado.getMonth()).to.equal(3); // Abril (0-indexado)
+      expect(resultado.getDate()).to.equal(10);
+      expect(resultado.getHours()).to.equal(14);
+      expect(resultado.getMinutes()).to.equal(30);
+    });
+});
+
 });
