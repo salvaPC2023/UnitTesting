@@ -149,6 +149,89 @@ describe('Proyecto Class Tests', function() {
       });
     });
 
+    describe('Método calcularPromedioComplejidad', function() {
+    
+      // TC1: Procesamiento de commit con complejidad 'excelente'
+      it('debería retornar 1 cuando todos los commits tienen complejidad "excelente"', () => {
+        const proyecto = new Proyecto("TestProyecto");
+        // Creamos un mock de arrayCommit con un solo commit de complejidad 'excelente'
+        const mockArrayCommit = {
+          getCommits: () => [
+            { getComplejidad: () => 'excelente' }
+          ]
+        };
+        
+        const resultado = proyecto.calcularPromedioComplejidad(mockArrayCommit);
+        expect(resultado).to.equal(1);
+      });
+      
+      // TC2: Procesamiento de commit con complejidad 'bueno'
+      it('debería retornar 2 cuando todos los commits tienen complejidad "bueno"', () => {
+        const proyecto = new Proyecto("TestProyecto");
+        const mockArrayCommit = {
+          getCommits: () => [
+            { getComplejidad: () => 'bueno' }
+          ]
+        };
+        
+        const resultado = proyecto.calcularPromedioComplejidad(mockArrayCommit);
+        expect(resultado).to.equal(2);
+      });
+      
+      // TC3: Procesamiento de commit con complejidad 'regular'
+      it('debería retornar 3 cuando todos los commits tienen complejidad "regular"', () => {
+        const proyecto = new Proyecto("TestProyecto");
+        const mockArrayCommit = {
+          getCommits: () => [
+            { getComplejidad: () => 'regular' }
+          ]
+        };
+        
+        const resultado = proyecto.calcularPromedioComplejidad(mockArrayCommit);
+        expect(resultado).to.equal(3);
+      });
+      
+      // TC4: Procesamiento de commit con complejidad 'deficiente'
+      it('debería retornar 4 cuando todos los commits tienen complejidad "deficiente"', () => {
+        const proyecto = new Proyecto("TestProyecto");
+        const mockArrayCommit = {
+          getCommits: () => [
+            { getComplejidad: () => 'deficiente' }
+          ]
+        };
+        
+        const resultado = proyecto.calcularPromedioComplejidad(mockArrayCommit);
+        expect(resultado).to.equal(4);
+      });
+      
+      // TC5: Array vacío
+      it('debería manejar correctamente un array de commits vacío', () => {
+        const proyecto = new Proyecto("TestProyecto");
+        const mockArrayCommit = {
+          getCommits: () => []
+        };
+        
+        const resultado = proyecto.calcularPromedioComplejidad(mockArrayCommit);
+        expect(isNaN(resultado)).to.be.true;
+      });
+      
+      // TC6: Combinación de diferentes complejidades
+      it('debería calcular correctamente el promedio de diferentes complejidades', () => {
+        const proyecto = new Proyecto("TestProyecto");
+        const mockArrayCommit = {
+          getCommits: () => [
+            { getComplejidad: () => 'excelente' }, // 1
+            { getComplejidad: () => 'bueno' },     // 2
+            { getComplejidad: () => 'regular' },   // 3
+            { getComplejidad: () => 'deficiente' } // 4
+          ]
+        };
+        
+        const resultado = proyecto.calcularPromedioComplejidad(mockArrayCommit);
+        expect(resultado).to.equal(2.5); // (1+2+3+4)/4 = 2.5
+      });
+    });
+
   });
 
 
