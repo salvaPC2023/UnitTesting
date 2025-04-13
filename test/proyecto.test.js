@@ -86,10 +86,40 @@ describe('Proyecto Class Tests', function() {
     });
 
 
-
-
-
+    describe('Método asignarPuntajeFrecuencia', function() {
     
+      // TC1: Caso "Excelente"
+      it('debería retornar 20 cuando la frecuencia es "Excelente"', () => {
+        const proyecto = new Proyecto("TestProyecto");
+        const resultado = proyecto.asignarPuntajeFrecuencia("Excelente");
+        expect(resultado).to.equal(20);
+      });
+      
+      // TC2: Caso "Bueno"
+      it('debería retornar 16 cuando la frecuencia es "Bueno"', () => {
+        const proyecto = new Proyecto("TestProyecto");
+        const resultado = proyecto.asignarPuntajeFrecuencia("Bueno");
+        expect(resultado).to.equal(16);
+      });
+      
+      // TC3: Caso "Regular"
+      it('debería retornar 12 cuando la frecuencia es "Regular"', () => {
+        const proyecto = new Proyecto("TestProyecto");
+        const resultado = proyecto.asignarPuntajeFrecuencia("Regular");
+        expect(resultado).to.equal(12);
+      });
+      
+      // TC4: Caso "Deficiente" o cualquier otro valor (default)
+      it('debería retornar 8 cuando la frecuencia es "Deficiente"', () => {
+        const proyecto = new Proyecto("TestProyecto");
+        const resultado = proyecto.asignarPuntajeFrecuencia("Deficiente");
+        expect(resultado).to.equal(8);
+      });
+      
+    });
+
+
+
   });
 
 
