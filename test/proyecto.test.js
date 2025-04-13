@@ -118,7 +118,36 @@ describe('Proyecto Class Tests', function() {
       
     });
 
-
+    describe('Método asignarPuntajeComplejidad', function() {
+    
+      // TC1: promedioComplejidad ≤ 1.5
+      it('debería retornar 20 cuando la complejidad promedio es menor o igual a 1.5', () => {
+        const proyecto = new Proyecto("TestProyecto");
+        const resultado = proyecto.asignarPuntajeComplejidad(1.2);
+        expect(resultado).to.equal(20);
+      });
+      
+      // TC2: 1.5 < promedioComplejidad ≤ 2.5
+      it('debería retornar 16 cuando la complejidad promedio es mayor a 1.5 y menor o igual a 2.5', () => {
+        const proyecto = new Proyecto("TestProyecto");
+        const resultado = proyecto.asignarPuntajeComplejidad(2.0);
+        expect(resultado).to.equal(16);
+      });
+      
+      // TC3: 2.5 < promedioComplejidad ≤ 3.5
+      it('debería retornar 12 cuando la complejidad promedio es mayor a 2.5 y menor o igual a 3.5', () => {
+        const proyecto = new Proyecto("TestProyecto");
+        const resultado = proyecto.asignarPuntajeComplejidad(3.0);
+        expect(resultado).to.equal(12);
+      });
+      
+      // TC4: promedioComplejidad > 3.5
+      it('debería retornar 8 cuando la complejidad promedio es mayor a 3.5', () => {
+        const proyecto = new Proyecto("TestProyecto");
+        const resultado = proyecto.asignarPuntajeComplejidad(4.0);
+        expect(resultado).to.equal(8);
+      });
+    });
 
   });
 
