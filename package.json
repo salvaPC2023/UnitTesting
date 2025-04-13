@@ -18,7 +18,8 @@
       "src/**/*.js"
     ],
     "exclude": [
-      "test/**"
+      "test/**",
+      "src/SCRIPTS/**"
     ],
     "reporter": [
       "html",

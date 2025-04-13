@@ -2,9 +2,8 @@
 
 import { expect } from 'chai';
 import Proyecto from '../src/OBJETOS/proyecto.js';
-import Commit from '../src/OBJETOS/commit.js';
 import path from 'path';
-import Puntaje from '../src/OBJETOS/puntaje.js';
+
 
 describe('Proyecto Class Tests', function() {
 
@@ -54,6 +53,43 @@ describe('Proyecto Class Tests', function() {
         expect(proyecto.getPuntajePruebas()).to.equal(0);
       });
 
+
+       //método obterPuntuacionTexto
+    describe('Método obterPuntuacionTexto', function() {
+        // TC1: Camino 1→2→FIN (puntuacion === 20)
+      it('debería retornar "Excelente" cuando la puntuación es 20', () => {
+          const proyecto = new Proyecto("Test1");
+          const resultado = proyecto.obterPuntuacionTexto(20);
+          expect(resultado).to.equal('Excelente');
+      });
+        
+      // TC2: Camino 1→3→4→FIN (puntuacion === 16)
+       it('debería retornar "Bueno" cuando la puntuación es 16', () => {
+           const proyecto = new Proyecto("Test2");
+          const resultado = proyecto.obterPuntuacionTexto(16);
+          expect(resultado).to.equal('Bueno');
+       });
+        
+       // TC3: Camino 1→3→5→6→FIN (puntuacion === 12)
+       it('debería retornar "Regular" cuando la puntuación es 12', () => {
+           const proyecto = new Proyecto("Test3");
+          const resultado = proyecto.obterPuntuacionTexto(12);
+          expect(resultado).to.equal('Regular');
+      });
+        
+      // TC4: Camino 1→3→5→7→FIN (puntuacion no es 20, 16 ni 12)
+      it('debería retornar "Deficiente" cuando la puntuación no es 20, 16 ni 12', () => {
+          const proyecto = new Proyecto("Test4");
+          const resultado = proyecto.obterPuntuacionTexto(8);
+          expect(resultado).to.equal('Deficiente');
+      });
+    });
+
+
+
+
+
+    
   });
 
 
