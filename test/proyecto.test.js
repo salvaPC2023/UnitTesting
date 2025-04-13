@@ -3,7 +3,8 @@
 import { expect } from 'chai';
 import Proyecto from '../src/OBJETOS/proyecto.js';
 import path from 'path';
-
+import ArrayCommit from "../src/OBJETOS/commitsArray.js";
+import Puntaje from '../src/OBJETOS/commit.js';
 
 describe('Proyecto Class Tests', function() {
 
@@ -98,13 +99,7 @@ describe('Proyecto Class Tests', function() {
       });
       
 
-
-
-
-
-
-
-       //método obterPuntuacionTexto
+             //método obterPuntuacionTexto
     describe('Método obterPuntuacionTexto', function() {
         // TC1: Camino 1→2→FIN (puntuacion === 20)
       it('debería retornar "Excelente" cuando la puntuación es 20', () => {
@@ -134,6 +129,90 @@ describe('Proyecto Class Tests', function() {
           expect(resultado).to.equal('Deficiente');
       });
     });
+
+
+    // calclula puntaje de lineas de codigo
+
+    describe('Método calcularPuntajeLineasCodigo', function () {
+
+      // TC1: Caso sin commits
+      it('debería retornar 100 cuando no hay commits', () => {
+          const proyecto = new Proyecto("TestProyecto");
+          proyecto.arrayCommit = {
+              getCommits: () => []
+          };
+          const resultado = proyecto.calcularPuntajeLineasCodigo();
+          expect(resultado).to.equal(100);
+      });
+  
+      // TC2: Caso con aumentos normales (≤30 líneas)
+      it('debería sumar 5 puntos por cada aumento ≤30 líneas', () => {
+          const proyecto = new Proyecto("TestProyecto");
+          proyecto.arrayCommit = {
+              getCommits: () => [
+                  { getCantLineas: () => 50 },
+                  { getCantLineas: () => 55 }
+              ]
+          };
+          const resultado = proyecto.calcularPuntajeLineasCodigo();
+          expect(resultado).to.equal(100);
+      });
+  
+      // TC3: Caso con aumento brusco (>30 líneas)
+      it('debería restar 20 puntos por aumento >30 líneas', () => {
+          const proyecto = new Proyecto("TestProyecto");
+          proyecto.arrayCommit = {
+              getCommits: () => [
+                  { getCantLineas: () => 50 },
+                  { getCantLineas: () => 85 }
+              ]
+          };
+          const resultado = proyecto.calcularPuntajeLineasCodigo();
+          expect(resultado).to.equal(80);
+      });
+  
+      // TC4: Caso con 3 disminuciones consecutivas
+      it('debería restar 20 puntos por 3 disminuciones consecutivas', () => {
+          const proyecto = new Proyecto("TestProyecto");
+          proyecto.arrayCommit = {
+              getCommits: () => [
+                  { getCantLineas: () => 100 },
+                  { getCantLineas: () => 95 },
+                  { getCantLineas: () => 90 },
+                  { getCantLineas: () => 85 }
+              ]
+          };
+          const resultado = proyecto.calcularPuntajeLineasCodigo();
+          expect(resultado).to.equal(80);
+      });
+  
+      // TC5: Caso combinado (aumento brusco + disminuciones + aumento normal)
+      it('debería calcular correctamente con cambios combinados', () => {
+          const proyecto = new Proyecto("TestProyecto");
+          proyecto.arrayCommit = {
+              getCommits: () => [
+                  { getCantLineas: () => 50 },
+                  { getCantLineas: () => 85 }, // +35 (-20)
+                  { getCantLineas: () => 80 }, // -5 (+1 disminución)
+                  { getCantLineas: () => 75 }, // -5 (+2 disminuciones)
+                  { getCantLineas: () => 90 }  // +15 (+5)
+              ]
+          };
+          const resultado = proyecto.calcularPuntajeLineasCodigo();
+          expect(resultado).to.equal(85);
+      });
+  
+      
+  });
+    
+    
+
+
+
+
+
+
+
 
 
     describe('Método asignarPuntajeFrecuencia', function() {
