@@ -53,6 +53,56 @@ describe('Proyecto Class Tests', function() {
         expect(proyecto.getPuntajePruebas()).to.equal(0);
       });
 
+      // Calcular % de prueba
+      describe('Método calcularPorcentajePruebas', function() {
+  
+        // TC1: Camino 1 → 2 ->3 → FIN (no hay commits)
+        it('debería retornar 0 cuando no hay commits', () => {
+          const proyecto = new Proyecto("Sin commits");
+      
+          // Simula que no hay commits
+          proyecto.arrayCommit.getCommits = () => [];
+      
+          const resultado = proyecto.calcularPorcentajePruebas();
+          expect(resultado).to.equal(0);
+        });
+      
+        // TC2: Camino 1 → 3 → 4 → 5 → 6 → FIN (hay commits, todas las pruebas aprobadas)
+        it('debería retornar 100 cuando todas las pruebas están aprobadas', () => {
+          const proyecto = new Proyecto("Todo aprobado");
+      
+          const commitMock = {
+            getCantPruebas: () => 10,
+            getCantPruebasAprob: () => 10
+          };
+          proyecto.arrayCommit.getCommits = () => [commitMock];
+      
+          const resultado = proyecto.calcularPorcentajePruebas();
+          expect(resultado).to.equal(100);
+        });
+      
+        // TC3: Camino 1 → 3 → 4 → 5 → 6 → 7→FIN (hay commits, no todas aprobadas)
+        it('debería retornar 50 cuando la mitad de las pruebas están aprobadas', () => {
+          const proyecto = new Proyecto("Mitad aprobado");
+      
+          const commitMock = {
+            getCantPruebas: () => 4,
+            getCantPruebasAprob: () => 2
+          };
+          proyecto.arrayCommit.getCommits = () => [commitMock];
+      
+          const resultado = proyecto.calcularPorcentajePruebas();
+          expect(resultado).to.equal(50);
+        });
+      
+      });
+      
+
+
+
+
+
+
 
        //método obterPuntuacionTexto
     describe('Método obterPuntuacionTexto', function() {
