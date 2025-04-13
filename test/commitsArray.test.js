@@ -102,4 +102,39 @@ describe('ArrayCommit Class Tests', () => {
     });
   });
 
+
+
+  // Pruebas para eliminarUltimoCommit
+  describe('eliminarUltimoCommit', () => {
+    it('debería eliminar el último commit añadido', () => {
+      // Arrange
+      const arrayCommit = new ArrayCommit();
+      const mockCommit1 = { id: 'commit1' };
+      const mockCommit2 = { id: 'commit2' };
+      
+      arrayCommit.aniadirCommitObj(mockCommit1);
+      arrayCommit.aniadirCommitObj(mockCommit2);
+      
+      // Act
+      const resultado = arrayCommit.eliminarUltimoCommit();
+      
+      // Assert
+      expect(resultado).to.be.an('array');
+      expect(resultado).to.have.lengthOf(1);
+      expect(resultado[0]).to.equal(mockCommit1);
+    });
+
+    it('no debería hacer nada si el array ya está vacío', () => {
+        // Arrange
+        const arrayCommit = new ArrayCommit();
+        
+        // Act
+        const resultado = arrayCommit.eliminarUltimoCommit();
+        
+        // Assert
+        expect(resultado).to.be.an('array');
+        expect(resultado).to.have.lengthOf(0);
+    });
+  });   
+
 });
