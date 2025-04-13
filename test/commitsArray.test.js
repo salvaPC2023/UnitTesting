@@ -136,5 +136,25 @@ describe('ArrayCommit Class Tests', () => {
         expect(resultado).to.have.lengthOf(0);
     });
   });   
+ describe('getCommits', () => {
+    it('debería devolver el array de commits', () => {
+      // Arrange
+      const arrayCommit = new ArrayCommit();
+      const mockCommit1 = { id: 'commit1' };
+      const mockCommit2 = { id: 'commit2' };
+      
+      arrayCommit.aniadirCommitObj(mockCommit1);
+      arrayCommit.aniadirCommitObj(mockCommit2);
+      
+      // Act
+      const resultado = arrayCommit.getCommits();
+      
+      // Assert
+      expect(resultado).to.be.an('array');
+      expect(resultado).to.have.lengthOf(2);
+      expect(resultado[0]).to.equal(mockCommit1);
+      expect(resultado[1]).to.equal(mockCommit2);
+    });
+  });
 
 });
