@@ -207,7 +207,40 @@ describe('Proyecto Class Tests', function() {
     
     
 
-
+  //Calcular % de covertura 
+  describe('calcularPorcentajeCobertura', function() {
+    // Camino 1: Sin commits
+    it('debería retornar 0 cuando no hay commits', function() {
+      const proyecto = new Proyecto("TestProyecto");
+      proyecto.arrayCommit = {
+        getCommits: () => []
+      };
+      expect(proyecto.calcularPorcentajeCobertura()).to.equal(0);
+    });
+  
+    // Camino 2: Un commit
+    it('debería retornar el mismo porcentaje con un commit', function() {
+      const proyecto = new Proyecto("TestProyecto");
+      proyecto.arrayCommit = {
+        getCommits: () => [
+          { getCobertura: () => 80 }
+        ]
+      };
+      expect(proyecto.calcularPorcentajeCobertura()).to.equal(80);
+    });
+  
+    // Camino 3: Múltiples commits
+    it('debería calcular el promedio con múltiples commits', function() {
+      const proyecto = new Proyecto("TestProyecto");
+      proyecto.arrayCommit = {
+        getCommits: () => [
+          { getCobertura: () => 80 },
+          { getCobertura: () => 90 }
+        ]
+      };
+      expect(proyecto.calcularPorcentajeCobertura()).to.equal(85);
+    });
+  });
 
 
 
