@@ -334,4 +334,185 @@ describe('ArrayCommit Class Tests', () => {
     });
   });
 
+
+
+
+
+  describe('ArrayCommit - calcularPromedioFrecuenciaCommits', () => {
+    let arrayCommit;
+    
+    beforeEach(() => {
+      arrayCommit = new ArrayCommit();
+      
+      // Mock para el método parseFecha
+      arrayCommit.parseFecha = (fechaString) => {
+        // Simplemente convertimos la string a fecha
+        return new Date(fechaString);
+      };
+    });
+    
+    // TC1: Array con menos de 2 commits
+    it('TC1: debería retornar "Deficiente" cuando hay menos de 2 commits', () => {
+      // Arrange: caso 1 - array vacío
+      
+      // Act
+      let resultado = arrayCommit.calcularPromedioFrecuenciaCommits();
+      
+      // Assert
+      expect(resultado).to.equal('Deficiente');
+      
+      // Arrange: caso 2 - array con un commit
+      const mockCommit = {
+        getFechaHora: () => '2025-04-10T10:00:00'
+      };
+      
+      arrayCommit.aniadirCommitObj(mockCommit);
+      
+      // Act
+      resultado = arrayCommit.calcularPromedioFrecuenciaCommits();
+      
+      // Assert
+      expect(resultado).to.equal('Deficiente');
+    });
+    
+    // TC2: Promedio de días < 2 (Excelente)
+    it('TC2: debería retornar "Excelente" cuando el promedio de días es menor a 2', () => {
+      // Arrange
+      const mockCommit1 = {
+        getFechaHora: () => '2025-04-10T10:00:00'
+      };
+      
+      const mockCommit2 = {
+        getFechaHora: () => '2025-04-11T10:00:00' // 1 día
+      };
+      
+      const mockCommit3 = {
+        getFechaHora: () => '2025-04-12T10:00:00' // 1 día
+      };
+      
+      arrayCommit.aniadirCommitObj(mockCommit1);
+      arrayCommit.aniadirCommitObj(mockCommit2);
+      arrayCommit.aniadirCommitObj(mockCommit3);
+      
+      // Act
+      const resultado = arrayCommit.calcularPromedioFrecuenciaCommits();
+      
+      // Assert
+      expect(resultado).to.equal('Excelente');
+    });
+    
+    // TC3: Promedio de días entre 2 y 3 (Bueno)
+    it('TC3: debería retornar "Bueno" cuando el promedio de días está entre 2 y 3', () => {
+      // Arrange
+      const mockCommit1 = {
+        getFechaHora: () => '2025-04-10T10:00:00'
+      };
+      
+      const mockCommit2 = {
+        getFechaHora: () => '2025-04-12T10:00:00' // 2 días
+      };
+      
+      const mockCommit3 = {
+        getFechaHora: () => '2025-04-15T10:00:00' // 3 días
+      };
+      
+      arrayCommit.aniadirCommitObj(mockCommit1);
+      arrayCommit.aniadirCommitObj(mockCommit2);
+      arrayCommit.aniadirCommitObj(mockCommit3);
+      
+      // Act
+      const resultado = arrayCommit.calcularPromedioFrecuenciaCommits();
+      
+      // Assert
+      // Promedio = (2+3)/2 = 2.5 días
+      expect(resultado).to.equal('Bueno');
+    });
+    
+    // TC4: Promedio de días entre 3 y 7 (Regular)
+    it('TC4: debería retornar "Regular" cuando el promedio de días está entre 3 y 7', () => {
+      // Arrange
+      const mockCommit1 = {
+        getFechaHora: () => '2025-04-10T10:00:00'
+      };
+      
+      const mockCommit2 = {
+        getFechaHora: () => '2025-04-15T10:00:00' // 5 días
+      };
+      
+      const mockCommit3 = {
+        getFechaHora: () => '2025-04-21T10:00:00' // 6 días
+      };
+      
+      arrayCommit.aniadirCommitObj(mockCommit1);
+      arrayCommit.aniadirCommitObj(mockCommit2);
+      arrayCommit.aniadirCommitObj(mockCommit3);
+      
+      // Act
+      const resultado = arrayCommit.calcularPromedioFrecuenciaCommits();
+      
+      // Assert
+      // Promedio = (5+6)/2 = 5.5 días
+      expect(resultado).to.equal('Regular');
+    });
+    
+    // TC5: Promedio de días mayor o igual a 7 (Deficiente)
+    it('TC5: debería retornar "Deficiente" cuando el promedio de días es mayor o igual a 7', () => {
+      // Arrange
+      const mockCommit1 = {
+        getFechaHora: () => '2025-04-01T10:00:00'
+      };
+      
+      const mockCommit2 = {
+        getFechaHora: () => '2025-04-08T10:00:00' // 7 días
+      };
+      
+      const mockCommit3 = {
+        getFechaHora: () => '2025-04-22T10:00:00' // 14 días
+      };
+      
+      arrayCommit.aniadirCommitObj(mockCommit1);
+      arrayCommit.aniadirCommitObj(mockCommit2);
+      arrayCommit.aniadirCommitObj(mockCommit3);
+      
+      // Act
+      const resultado = arrayCommit.calcularPromedioFrecuenciaCommits();
+      
+      // Assert
+      // Promedio = (7+14)/2 = 10.5 días
+      expect(resultado).to.equal('Deficiente');
+    });
+    
+    // Caso adicional: Verificación de cálculo correcto del promedio
+    it('debería calcular correctamente el promedio con diferentes diferencias de días', () => {
+      // Arrange
+      const mockCommit1 = {
+        getFechaHora: () => '2025-04-01T10:00:00'
+      };
+      
+      const mockCommit2 = {
+        getFechaHora: () => '2025-04-03T10:00:00' // 2 días
+      };
+      
+      const mockCommit3 = {
+        getFechaHora: () => '2025-04-04T10:00:00' // 1 día
+      };
+      
+      const mockCommit4 = {
+        getFechaHora: () => '2025-04-08T10:00:00' // 4 días
+      };
+      
+      arrayCommit.aniadirCommitObj(mockCommit1);
+      arrayCommit.aniadirCommitObj(mockCommit2);
+      arrayCommit.aniadirCommitObj(mockCommit3);
+      arrayCommit.aniadirCommitObj(mockCommit4);
+      
+      // Act
+      const resultado = arrayCommit.calcularPromedioFrecuenciaCommits();
+      
+      // Assert
+      // Promedio = (2+1+4)/3 = 2.33 días
+      expect(resultado).to.equal('Bueno');
+    });
+  });
+
 });
