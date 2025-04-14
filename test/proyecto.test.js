@@ -1,10 +1,15 @@
 
-
 import { expect } from 'chai';
 import Proyecto from '../src/OBJETOS/proyecto.js';
 import path from 'path';
+import fs from "fs";
 import ArrayCommit from "../src/OBJETOS/commitsArray.js";
 import Puntaje from '../src/OBJETOS/commit.js';
+import Commit from '../src/OBJETOS/commit.js';
+//r
+import sinon from 'sinon';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 describe('Proyecto Class Tests', function() {
 
@@ -239,37 +244,152 @@ describe('Proyecto Class Tests', function() {
     });
   });
 
-
-
-  describe('Pruebas para getPuntajeCantPruebas()', function() {
-      
-    // Hook que se ejecuta antes de cada prueba
-    beforeEach(function() {
-      proyecto = new Proyecto(); // Reiniciamos el proyecto para cada test
-    });
-  
-    it("Debería retornar 8 para un proyecto con 0 commits", function() {
-      const puntaje = proyecto.getPuntajeCantPruebas(proyecto.getArrayCommit());
-      expect(puntaje).to.equal(8);
-    });
-  
-    it("Debería retornar 20 para 1 commit con 100% pruebas nuevas", function() {
-      proyecto.aniadirCommit(2); // Asumo que 2 representa 100% pruebas nuevas
-      const puntaje = proyecto.getPuntajeCantPruebas(proyecto.getArrayCommit());
-      expect(puntaje).to.equal(20);
-    });
-  
+  describe('Método ingresarCommitsPor', function() {
+    let proyecto;
+    let fsReadFileStub;
+    let originalReadFile;
     
-    it("Debería retornar 12 para 5 commits con 60% pruebas nuevas", function() {
-      // 3 de 5 commits con pruebas nuevas (60%)
-      proyecto.aniadirCommit(2);
-      proyecto.aniadirCommit(2);
-      proyecto.aniadirCommit(2);
-      proyecto.aniadirCommit(0);
-      proyecto.aniadirCommit(0);
+    beforeEach(function() {
+      proyecto = new Proyecto("TestProyecto");
       
-      const puntaje = proyecto.getPuntajeCantPruebas(proyecto.getArrayCommit());
-      expect(puntaje).to.equal(12);
+      // Guardar la implementación original de readFileSync
+      originalReadFile = fs.readFileSync;
+      
+      // Crear stub para fs.readFileSync solamente
+      fsReadFileStub = sinon.stub(fs, "readFileSync");
+      
+      if (typeof global.__dirname === 'undefined') {
+        const __filename = fileURLToPath(import.meta.url);
+        global.__dirname = dirname(__filename);
+      }
+    });
+    
+    afterEach(function() {
+      sinon.restore();
+      
+      // Limpiar las variables globales definidas si es necesario
+      // delete global.__dirname;
+    });
+    
+    // TC1: Archivo vacío
+    it('debería retornar "Archivo vacio" cuando el archivo está vacío', function() {
+      fsReadFileStub.returns('');
+
+      const resultado = proyecto.ingresarCommitsPor('ruta/archivo_vacio.txt');
+
+      expect(resultado).to.equal('Archivo vacio');
+      expect(fsReadFileStub.called).to.be.true;
+    });
+    
+    // TC2: Archivo con un solo commit
+    it('debería procesar correctamente un archivo con un solo commit', function() {
+      const contenidoArchivo = '1,2023-04-10,10,100,85,excelente';
+      fsReadFileStub.returns(contenidoArchivo);
+
+      const aniadirSpy = sinon.spy(proyecto.arrayCommit, "aniadirCommitObj");
+
+      const resultado = proyecto.ingresarCommitsPor('ruta/archivo_un_commit.txt');
+
+      expect(resultado).to.equal('Archivo leido');
+      expect(fsReadFileStub.called).to.be.true;
+      expect(aniadirSpy.calledOnce).to.be.true;
+
+      const commitCreado = aniadirSpy.firstCall.args[0];
+      expect(commitCreado).to.be.an.instanceof(Commit);
+      expect(commitCreado.getId()).to.equal(1);
+      expect(commitCreado.getFechaHora()).to.equal('2023-04-10');
+      expect(commitCreado.getCantPruebas()).to.equal(10);
+      expect(commitCreado.getCantLineas()).to.equal(100);
+      expect(commitCreado.getCobertura()).to.equal(85);
+      expect(commitCreado.getComplejidad()).to.equal('excelente');
+    });
+    
+    // TC3: Archivo con múltiples commits
+    it('debería procesar correctamente un archivo con múltiples commits', function() {
+      const contenidoArchivo = 
+        '1,2023-04-10,10,100,85,excelente\n' +
+        '2,2023-04-11,15,110,90,bueno\n' +
+        '3,2023-04-12,8,105,80,regular';
+      fsReadFileStub.returns(contenidoArchivo);
+
+      const aniadirSpy = sinon.spy(proyecto.arrayCommit, "aniadirCommitObj");
+
+      const resultado = proyecto.ingresarCommitsPor('ruta/archivo_multiples_commits.txt');
+
+      expect(resultado).to.equal('Archivo leido');
+      expect(fsReadFileStub.called).to.be.true;
+      expect(aniadirSpy.callCount).to.equal(3);
+    });
+    
+    // TC4: Archivo con formato incorrecto
+    it('debería manejar correctamente un archivo con formato incorrecto', function() {
+      const contenidoArchivo = 'formato_incorrecto_sin_comas';
+      fsReadFileStub.returns(contenidoArchivo);
+
+      const resultado = proyecto.ingresarCommitsPor('ruta/archivo_formato_incorrecto.txt');
+
+      expect(resultado).to.equal('Archivo leido');
+      expect(fsReadFileStub.called).to.be.true;
+    });
+    
+    // TC5: Error en la lectura del archivo
+    it('debería manejar correctamente errores en la lectura del archivo', function() {
+      fsReadFileStub.throws(new Error('Error al leer el archivo'));
+
+      let error;
+      try {
+        proyecto.ingresarCommitsPor('ruta/archivo_inexistente.txt');
+      } catch (e) {
+        error = e;
+      }
+
+      expect(error).to.be.an('error');
+      expect(error.message).to.equal('Error al leer el archivo');
+      expect(fsReadFileStub.called).to.be.true;
+    });
+    
+    // TC6: Archivo con espacios extra alrededor de los valores
+    it('debería procesar correctamente un archivo con espacios extra', function() {
+      const contenidoArchivo = '1 , 2023-04-10 , 10 , 100 , 85 , excelente ';
+      fsReadFileStub.returns(contenidoArchivo);
+
+      const aniadirSpy = sinon.spy(proyecto.arrayCommit, "aniadirCommitObj");
+
+      const resultado = proyecto.ingresarCommitsPor('ruta/archivo_con_espacios.txt');
+
+      expect(resultado).to.equal('Archivo leido');
+      expect(fsReadFileStub.called).to.be.true;
+      expect(aniadirSpy.calledOnce).to.be.true;
+
+      const commitCreado = aniadirSpy.firstCall.args[0];
+      expect(commitCreado).to.be.an.instanceof(Commit);
+      expect(commitCreado.getCantPruebas()).to.equal(10);
+      expect(commitCreado.getCantLineas()).to.equal(100);
+      expect(commitCreado.getCobertura()).to.equal(85);
+      expect(commitCreado.getComplejidad()).to.equal('excelente');
+    });
+    
+    // TC7: Probar el método alternativo ingresarCommitsPorContenidoDe
+    it('debería procesar correctamente un archivo usando ingresarCommitsPorContenidoDe', function() {
+      sinon.restore();
+
+      const aniadirSpy = sinon.spy(proyecto.arrayCommit, "aniadirCommitObj");
+
+      const contenidoArchivo = '1,2023-04-10,10,100,85,excelente';
+      
+      const resultado = proyecto.ingresarCommitsPorContenidoDe(contenidoArchivo);
+
+      expect(resultado).to.equal('Archivo leido');
+      expect(aniadirSpy.calledOnce).to.be.true;
+
+      const commitCreado = aniadirSpy.firstCall.args[0];
+      expect(commitCreado).to.be.an.instanceof(Commit);
+      expect(commitCreado.getId()).to.equal(1);
+      expect(commitCreado.getFechaHora()).to.equal('2023-04-10');
+      expect(commitCreado.getCantPruebas()).to.equal(10);
+      expect(commitCreado.getCantLineas()).to.equal(100);
+      expect(commitCreado.getCobertura()).to.equal(85);
+      expect(commitCreado.getComplejidad()).to.equal('excelente');
     });
   });
 

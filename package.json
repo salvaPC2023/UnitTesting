@@ -41,6 +41,7 @@
     "nyc": "^17.1.0",
     "parcel": "^2.8.3",
     "path-browserify": "^1.0.1",
-    "process": "^0.11.10"
+    "process": "^0.11.10",
+    "sinon": "^20.0.0"
   }
 }
