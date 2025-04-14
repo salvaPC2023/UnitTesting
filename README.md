@@ -4,6 +4,12 @@ npm install
 
 #### Comandos de uso:
 
+Instalar con npm globalmante
+npm install --global mocha chai c8
+
+o como dependencia para el desarrollo del proyecto
+npm install --save-dev-mocha chai c8
+
 Ejecutar web-sever local parcel:
 npm start
 
