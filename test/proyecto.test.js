@@ -244,7 +244,37 @@ describe('Proyecto Class Tests', function() {
 
 
 
-
+  describe('Pruebas para getPuntajeCantPruebas()', function() {
+      
+    // Hook que se ejecuta antes de cada prueba
+    beforeEach(function() {
+      proyecto = new Proyecto(); // Reiniciamos el proyecto para cada test
+    });
+  
+    it("Debería retornar 8 para un proyecto con 0 commits", function() {
+      const puntaje = proyecto.getPuntajeCantPruebas(proyecto.getArrayCommit());
+      expect(puntaje).to.equal(8);
+    });
+  
+    it("Debería retornar 20 para 1 commit con 100% pruebas nuevas", function() {
+      proyecto.aniadirCommit(2); // Asumo que 2 representa 100% pruebas nuevas
+      const puntaje = proyecto.getPuntajeCantPruebas(proyecto.getArrayCommit());
+      expect(puntaje).to.equal(20);
+    });
+  
+    
+    it("Debería retornar 12 para 5 commits con 60% pruebas nuevas", function() {
+      // 3 de 5 commits con pruebas nuevas (60%)
+      proyecto.aniadirCommit(2);
+      proyecto.aniadirCommit(2);
+      proyecto.aniadirCommit(2);
+      proyecto.aniadirCommit(0);
+      proyecto.aniadirCommit(0);
+      
+      const puntaje = proyecto.getPuntajeCantPruebas(proyecto.getArrayCommit());
+      expect(puntaje).to.equal(12);
+    });
+  });
 
 
 
