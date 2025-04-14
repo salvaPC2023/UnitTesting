@@ -278,6 +278,62 @@ describe('Proyecto Class Tests', function() {
 
 
 
+  describe('Proyecto Class Tests', function() {
+    
+    
+    // Se ejecuta antes de cada prueba
+    beforeEach(function() {
+      proyecto = new Proyecto("TestProyecto");
+    });
+  
+    describe('Método calcularPorcentaje', function() {
+      
+          
+      it('debería retornar 100 cuando todos los commits tienen pruebas', function() {
+        // Configuración
+        const mockArrayCommit = { 
+          getCommits: () => [
+            { getCantPruebas: () => 1 },
+            { getCantPruebas: () => 1 }
+          ] 
+        };
+        
+        // Ejecución y Verificación
+        expect(proyecto.calcularPorcentaje(mockArrayCommit)).to.equal(100);
+      });
+    
+      it('debería retornar ~66.67 cuando 2 de 3 commits tienen pruebas', function() {
+        // Configuración
+        const mockArrayCommit = {
+          getCommits: () => [
+            { getCantPruebas: () => 1 },
+            { getCantPruebas: () => 0 },
+            { getCantPruebas: () => 1 }
+          ]
+        };
+        
+        // Ejecución y Verificación
+        expect(proyecto.calcularPorcentaje(mockArrayCommit)).to.be.closeTo(66.67, 0.01);
+      });
+  
+      it('debería retornar 0 cuando ningún commit tiene pruebas', function() {
+        // Configuración
+        const mockArrayCommit = { 
+          getCommits: () => [
+            { getCantPruebas: () => 0 },
+            { getCantPruebas: () => 0 }
+          ] 
+        };
+        
+        // Ejecución y Verificación
+        expect(proyecto.calcularPorcentaje(mockArrayCommit)).to.equal(0);
+      });
+    });
+  });
+
+
+
+
     describe('Método asignarPuntajeFrecuencia', function() {
     
       // TC1: Caso "Excelente"
